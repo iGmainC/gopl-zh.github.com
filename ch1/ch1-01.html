@@ -181,7 +181,7 @@ func main() {
 <p>如果不只是一次性实验，你肯定希望能够编译这个程序，保存编译结果以备将来之用。可以用 <code>build</code> 子命令：</p>
 <pre><code class="language-shell">$ go build helloworld.go
 </code></pre>
-<p>这个命令生成一个名为 helloworld 的可执行的二进制文件（译注：Windows 系统下生成的可执行文件是 <code>helloworld.exe</code>，增加了。<code>.exe</code> 后缀名），之后你可以随时运行它（译注：在 Windows 系统下在命令行直接输入 <code>helloworld.exe</code> 命令运行），不需任何处理（译注：因为静态编译，所以不用担心在系统库更新的时候冲突，幸福感满满）。</p>
+<p>这个命令生成一个名为 <code>helloworld</code> 的可执行的二进制文件（译注：Windows 系统下生成的可执行文件是 <code>helloworld.exe</code>，增加了 <code>.exe</code> 后缀名），之后你可以随时运行它（译注：在 Windows 系统下在命令行直接输入 <code>helloworld.exe</code> 命令运行），不需任何处理（译注：因为静态编译，所以不用担心在系统库更新的时候冲突，幸福感满满）。</p>
 <pre><code>$ ./helloworld
 Hello, 世界
 </code></pre>
@@ -189,10 +189,10 @@ Hello, 世界
 <pre><code>gopl.io/ch1/helloworld
 </code></pre>
 <p>执行 <code>go get gopl.io/ch1/helloworld</code> 命令，就会从网上获取代码，并放到对应目录中（需要先安装 Git 或 Hg 之类的版本管理工具，并将对应的命令添加到 <code>PATH</code> 环境变量中。序言已经提及，需要先设置好 <code>GOPATH</code> 环境变量，下载的代码会放在 <code>$GOPATH/src/gopl.io/ch1/helloworld</code> 目录）。2.6 和 10.7 节有这方面更详细的介绍。</p>
-<p>来讨论下程序本身。Go 语言的代码通过<strong>包</strong>（package）组织，包类似于其它语言里的库（libraries）或者模块（modules）。一个包由位于单个目录下的一个或多个。go 源代码文件组成，目录定义包的作用。每个源文件都以一条 <code>package</code> 声明语句开始，这个例子里就是<code>package main</code>，表示该文件属于哪个包，紧跟着一系列导入（import）的包，之后是存储在这个文件里的程序语句。</p>
-<p>Go 的标准库提供了 100 多个包，以支持常见功能，如输入、输出、排序以及文本处理。比如 <code>fmt</code> 包，就含有格式化输出、接收输入的函数。<code>Println</code>是其中一个基础函数，可以打印以空格间隔的一个或多个值，并在最后添加一个换行符，从而输出一整行。</p>
-<p><code>main</code>包比较特殊。它定义了一个独立可执行的程序，而不是一个库。在 <code>main</code> 里的 <code>main</code> <em>函数</em> 也很特殊，它是整个程序执行时的入口（译注：C 系语言差不多都这样）。<code>main</code> 函数所做的事情就是程序做的。当然了，<code>main</code> 函数一般调用其它包里的函数完成很多工作（如：<code>fmt.Println</code>）。</p>
-<p>必须告诉编译器源文件需要哪些包，这就是跟随在 <code>package</code> 声明后面的 <code>import</code> 声明扮演的角色。hello world 例子只用到了一个包，大多数程序需要导入多个包。</p>
+<p>来讨论下程序本身。Go 语言的代码通过<strong>包</strong>（package）组织，包类似于其它语言里的库（libraries）或者模块（modules）。一个包由位于单个目录下的一个或多个 <code>.go</code> 源代码文件组成，目录定义包的作用。每个源文件都以一条 <code>package</code> 声明语句开始，这个例子里就是 <code>package main</code>，表示该文件属于哪个包，紧跟着一系列导入（import）的包，之后是存储在这个文件里的程序语句。</p>
+<p>Go 的标准库提供了 100 多个包，以支持常见功能，如输入、输出、排序以及文本处理。比如 <code>fmt</code> 包，就含有格式化输出、接收输入的函数。<code>Println</code> 是其中一个基础函数，可以打印以空格间隔的一个或多个值，并在最后添加一个换行符，从而输出一整行。</p>
+<p><code>main</code> 包比较特殊。它定义了一个独立可执行的程序，而不是一个库。在 <code>main</code> 里的 <code>main</code> <em>函数</em>也很特殊，它是整个程序执行时的入口（译注：C 系语言差不多都这样）。<code>main</code> 函数所做的事情就是程序做的。当然了，<code>main</code> 函数一般调用其它包里的函数完成很多工作（如：<code>fmt.Println</code>）。</p>
+<p>必须告诉编译器源文件需要哪些包，这就是跟随在 <code>package</code> 声明后面的 <code>import</code> 声明扮演的角色。<code>hello world</code> 例子只用到了一个包，大多数程序需要导入多个包。</p>
 <p>必须恰当导入需要的包，缺少了必要的包或者导入了不需要的包，程序都无法编译通过。这项严格要求避免了程序开发过程中引入未使用的包（译注：Go 语言编译过程没有警告信息，争议特性之一）。</p>
 <p><code>import</code> 声明必须跟在文件的 <code>package</code> 声明之后。随后，则是组成程序的函数、变量、常量、类型的声明语句（分别由关键字 <code>func</code>、<code>var</code>、<code>const</code>、<code>type</code> 定义）。这些内容的声明顺序并不重要（译注：最好还是定一下规范）。这个例子的程序已经尽可能短了，只声明了一个函数，其中只调用了一个其他函数。为了节省篇幅，有些时候示例程序会省略 <code>package</code> 和 <code>import</code> 声明，但是，这些声明在源代码里有，并且必须得有才能编译。</p>
 <p>一个函数的声明由 <code>func</code> 关键字、函数名、参数列表、返回值列表（这个例子里的 <code>main</code> 函数参数列表和返回值都是空的）以及包含在大括号里的函数体组成。第五章进一步考察函数。</p>
