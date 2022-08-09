@@ -276,7 +276,7 @@ Hello, 世界
 </code></pre>
 <p>对于大多数用户来说，下载、编译包、运行测试用例、察看 Go 语言的文档等等常用功能都可以用 go 的工具完成。10.7 节详细介绍这些知识。</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="12-命令行参数"><a class="header" href="#12-命令行参数">1.2. 命令行参数</a></h2>
-<p>大多数的程序都是处理输入，产生输出；这也正是 “计算” 的定义。但是，程序如何获取要处理的输入数据呢？一些程序生成自己的数据，但通常情况下，输入来自于程序外部：文件、网络连接、其它程序的输出、敲键盘的用户、命令行参数或其它类似输入源。下面几个例子会讨论其中几个输入源，首先是命令行参数。</p>
+<p>大多数的程序都是处理输入，产生输出；这也正是“计算”的定义。但是，程序如何获取要处理的输入数据呢？一些程序生成自己的数据，但通常情况下，输入来自于程序外部：文件、网络连接、其它程序的输出、敲键盘的用户、命令行参数或其它类似输入源。下面几个例子会讨论其中几个输入源，首先是命令行参数。</p>
 <p><code>os</code> 包以跨平台的方式，提供了一些与操作系统交互的函数和变量。程序的命令行参数可从 <code>os</code> 包的 <code>Args</code> 变量获取；<code>os</code> 包外部使用 <code>os.Args</code> 访问该变量。</p>
 <p><code>os.Args</code> 变量是一个字符串（string）的 <em>切片</em>（slice）（译注：slice 和 Python 语言中的切片类似，是一个简版的动态数组），切片是 Go 语言的基础概念，稍后详细介绍。现在先把切片 <code>s</code> 当作数组元素序列，序列的长度动态变化，用 <code>s[i]</code> 访问单个元素，用 <code>s[m:n]</code> 获取子序列（译注：和 Python 里的语法差不多）。序列的元素数目为 <code>len(s)</code>。和大多数编程语言类似，区间索引时，Go 语言里也采用左闭右开形式，即，区间包括第一个索引元素，不包括最后一个，因为这样可以简化逻辑。（译注：比如 <code>a=[1,2,3,4,5]</code>, <code>a[0:3]=[1,2,3]</code>，不包含最后一个元素）。比如 <code>s[m:n]</code> 这个切片，<code>0≤m≤n≤len(s)</code>，包含 <code>n-m</code> 个元素。</p>
 <p><code>os.Args</code> 的第一个元素：<code>os.Args[0]</code>，是命令本身的名字；其它的元素则是程序启动时传给它的参数。<code>s[m:n]</code> 形式的切片表达式，产生从第 <code>m</code> 个元素到第 <code>n-1</code> 个元素的切片，下个例子用到的元素包含在 <code>os.Args[1:len(os.Args)]</code> 切片中。如果省略切片表达式的 <code>m</code> 或 <code>n</code>，会默认传入 <code>0</code> 或 <code>len(s)</code>，因此前面的切片可以简写成 <code>os.Args[1:]</code>。</p>
@@ -301,25 +301,17 @@ func main() {
 </code></pre>
 <p>注释语句以 <code>//</code> 开头。对于程序员来说，<code>//</code> 之后到行末之间所有的内容都是注释，被编译器忽略。按照惯例，我们在每个包的包声明前添加注释；对于 <code>main package</code>，注释包含一句或几句话，从整体角度对程序做个描述。</p>
 <p><code>var</code> 声明定义了两个 <code>string</code> 类型的变量 <code>s</code> 和 <code>sep</code>。变量会在声明时直接初始化。如果变量没有显式初始化，则被隐式地赋予其类型的 <em>零值</em>（zero value），数值类型是 <code>0</code>，字符串类型是空字符串 <code>&quot;&quot;</code>。这个例子里，声明把 <code>s</code> 和 <code>sep</code> 隐式地初始化成空字符串。第 2 章再来详细地讲解变量和声明。</p>
-<p>对数值类型，Go 语言提供了常规的数值和逻辑运算符。而对 <code>string</code> 类型，<code>+</code> 运算符连接字符串（译注：和 C++ 或者 JavaScript 是一样的）。所以表达式：</p>
-<pre><code class="language-go">sep + os.Args[i]
-</code></pre>
-<p>表示连接字符串 <code>sep</code> 和 <code>os.Args</code>。程序中使用的语句：</p>
-<pre><code class="language-go">s += sep + os.Args[i]
-</code></pre>
-<p>是一条 <em>赋值语句</em>，将 <code>s</code> 的旧值跟 <code>sep</code> 与 <code>os.Args[i]</code> 连接后赋值回 <code>s</code>，等价于：</p>
-<pre><code class="language-go">s = s + sep + os.Args[i]
-</code></pre>
+<p>对数值类型，Go 语言提供了常规的数值和逻辑运算符。而对 <code>string</code> 类型，<code>+</code> 运算符连接字符串（译注：和 C++ 或者 JavaScript 是一样的）。所以表达式：<code>sep + os.Args[i]</code> 表示连接字符串 <code>sep</code> 和 <code>os.Args</code>。程序中使用的语句：<code>s+=sep+os.Args[i]</code> 是一条 <em>赋值语句</em>，将 <code>s</code> 的旧值跟 <code>sep</code> 与 <code>os.Args[i]</code> 连接后赋值回 <code>s</code>，等价于：<code>s=s+sep+os.Args[i]</code>。</p>
 <p>运算符 <code>+=</code> 是赋值运算符（assignment operator），每种数值运算符或逻辑运算符，如 <code>+</code> 或 <code>*</code>，都有对应的赋值运算符。</p>
 <p><code>echo</code> 程序可以每循环一次输出一个参数，这个版本却是不断地把新文本追加到末尾来构造字符串。字符串 <code>s</code> 开始为空，即值为 <code>&quot;&quot;</code>，每次循环会添加一些文本；第一次迭代之后，还会再插入一个空格，因此循环结束时每个参数中间都有一个空格。这是一种二次加工（quadratic process），当参数数量庞大时，开销很大，但是对于 <code>echo</code>，这种情形不大可能出现。本章会介绍 <code>echo</code> 的若干改进版，下一章解决低效问题。</p>
-<p>循环索引变量 <code>i</code> 在 for 循环的第一部分中定义。符号 <code>:=</code> 是 <em>短变量声明</em>（short variable declaration）的一部分，这是定义一个或多个变量并根据它们的初始值为这些变量赋予适当类型的语句。下一章有这方面更多说明。</p>
-<p>自增语句 <code>i++</code> 给 <code>i</code> 加 1；这和 <code>i+=1</code> 以及 <code>i=i+1</code> 都是等价的。对应的还有 <code>i--</code> 给 <code>i</code> 减 1。它们是语句，而不像 C 系的其它语言那样是表达式。所以 <code>j=i++</code> 非法，而且 <code>++</code> 和 <code>--</code> 都只能放在变量名后面，因此 <code>--i</code> 也非法。</p>
-<p>Go 语言只有 for 循环这一种循环语句。for 循环有多种形式，其中一种如下所示：</p>
+<p>循环索引变量 <code>i</code> 在 <code>for</code> 循环的第一部分中定义。符号 <code>:=</code> 是 <em>短变量声明</em>（short variable declaration）的一部分，这是定义一个或多个变量并根据它们的初始值为这些变量赋予适当类型的语句。下一章有这方面更多说明。</p>
+<p>自增语句 <code>i++</code> 给 <code>i</code> 加 <code>1</code>；这和 <code>i+=1</code> 以及 <code>i=i+1</code> 都是等价的。对应的还有 <code>i--</code> 给 <code>i</code> 减 <code>1</code>。它们是语句，而不像 C 系的其它语言那样是表达式。所以 <code>j=i++</code> 非法，而且 <code>++</code> 和 <code>--</code> 都只能放在变量名后面，因此 <code>--i</code> 也非法。</p>
+<p>Go 语言只有 <code>for</code> 循环这一种循环语句。<code>for</code> 循环有多种形式，其中一种如下所示：</p>
 <pre><code class="language-go">for initialization; condition; post {
 	// zero or more statements
 }
 </code></pre>
-<p>for 循环三个部分不需括号包围。大括号强制要求，左大括号必须和 <em><code>post</code></em> 语句在同一行。</p>
+<p><code>for</code> 循环三个部分不需括号包围。大括号强制要求，左大括号必须和 <em><code>post</code></em> 语句在同一行。</p>
 <p><em><code>initialization</code></em> 语句是可选的，在循环开始前执行。<em><code>initalization</code></em> 如果存在，必须是一条 <em>简单语句</em>（simple statement），即，短变量声明、自增语句、赋值语句或函数调用。<code>condition</code> 是一个布尔表达式（boolean expression），其值在每次循环迭代开始时计算。如果为 <code>true</code> 则执行循环体语句。<code>post</code> 语句在循环体执行结束后执行，之后再次对 <code>condition</code> 求值。<code>condition</code> 值为 <code>false</code> 时，循环结束。</p>
 <p>for 循环的这三个部分每个都可以省略，如果省略 <code>initialization</code> 和 <code>post</code>，分号也可以省略：</p>
 <pre><code class="language-go">// a traditional &quot;while&quot; loop
@@ -376,7 +368,7 @@ var s string = &quot;&quot;
 <hr />
 <p><strong>练习 1.1：</strong> 修改 <code>echo</code> 程序，使其能够打印 <code>os.Args[0]</code>，即被执行命令本身的名字。</p>
 <p><strong>练习 1.2：</strong> 修改 <code>echo</code> 程序，使其打印每个参数的索引和值，每个一行。</p>
-<p><strong>练习 1.3：</strong> 做实验测量潜在低效的版本和使用了 <code>strings.Join</code> 的版本的运行时间差异。（1.6 节讲解了部分 <code>time</code> 包，11.4 节展示了如何写标准测试程序，以得到系统性的性能评测。）</p>
+<p><strong>练习 1.3：</strong> 做实验测量潜在低效的版本和使用了 <code>strings.Join</code> 的版本的运行时间差异。（<a href="ch1/./ch1-06.html">1.6 节</a>讲解了部分 <code>time</code> 包，<a href="ch1/../ch11/ch11-04.html">11.4 节</a>展示了如何写标准测试程序，以得到系统性的性能评测。）</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="13-查找重复的行"><a class="header" href="#13-查找重复的行">1.3. 查找重复的行</a></h2>
 <p>对文件做拷贝、打印、搜索、排序、统计或类似事情的程序都有一个差不多的程序结构：一个处理输入的循环，在每个元素上执行计算处理，在处理的同时或最后产生输出。我们会展示一个名为 <code>dup</code> 的程序的三个版本；灵感来自于 Unix 的 <code>uniq</code> 命令，其寻找相邻的重复行。该程序使用的结构和包是个参考范例，可以方便地修改。</p>
 <p><code>dup</code> 的第一个版本打印标准输入中多次出现的行，以重复次数开头。该程序将引入 <code>if</code> 语句，<code>map</code> 数据类型以及 <code>bufio</code> 包。</p>
